@@ -7,7 +7,7 @@
   "gamma": 0.99,
   "actor learning rate": 0.0001,
   "critic learning rate": 0.001,
-  "seed": 1337,
+  "seed": 1437,
   "td3_policy_noise": 0.2,
   "td3_noise_clip": 0.5,
   "td3_policy_freq": 2
