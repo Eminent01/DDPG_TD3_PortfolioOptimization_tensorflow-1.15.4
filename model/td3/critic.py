@@ -32,13 +32,13 @@ class TD3CriticNetwork(object):
         self.out1, self.out2 = self.create_critic_network('main_critic', self.action, reuse=True)
 
         #self.network_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'main_critic')
-        self.network_params = tf.trainable_variables()[num_actor_vars:]
+        self.network_params = tf.compat.v1.trainable_variables()[num_actor_vars:]
 
         # Target Critic
         self.target_out1, self.target_out2 = self.create_critic_network('target_critic', self.action)
 
         #self.target_network_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'target_critic')
-        self.target_network_params = tf.trainable_variables()[(len(self.network_params) + num_actor_vars):]
+        self.target_network_params = tf.compat.v1.trainable_variables()[(len(self.network_params) + num_actor_vars):]
 
         self.update_target_network_params = \
             [self.target_network_params[i].assign(tf.multiply(self.network_params[i], self.tau) +
