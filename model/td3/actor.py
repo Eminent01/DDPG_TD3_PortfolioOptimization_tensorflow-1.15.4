@@ -42,12 +42,12 @@ class TD3ActorNetwork(object):
         # Actor Network
         self.inputs, self.out, self.scaled_out = self.create_actor_network()
 
-        self.network_params = tf.trainable_variables()
+        self.network_params = tf.compat.v1.trainable_variables()
 
         # Target Network
         self.target_inputs, self.target_out, self.target_scaled_out = self.create_actor_network()
 
-        self.target_network_params = tf.trainable_variables()[len(self.network_params):]
+        self.target_network_params = tf.compat.v1.trainable_variables()[len(self.network_params):]
 
         # Op for periodically updating target network with online network weights
         self.update_target_network_params = \
