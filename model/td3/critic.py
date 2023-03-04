@@ -4,8 +4,10 @@
     Fujimoto et. al. "Addressing Function Approximation in Actor-Critic Methods
 """
 
-import tensorflow as tf
+# import tensorflow as tf
+import tensorflow.compat.v1 as tf
 
+tf.disable_v2_behavior() 
 
 class TD3CriticNetwork(object):
     """
