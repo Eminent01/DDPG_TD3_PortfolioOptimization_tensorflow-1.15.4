@@ -7,9 +7,12 @@ import os
 import traceback
 import json
 import numpy as np
-import tensorflow as tf
+# import tensorflow as tf
 import pandas as pd
 import matplotlib.pyplot as plt
+import tensorflow.compat.v1 as tf
+
+tf.disable_v2_behavior() 
 
 from model.replay_buffer import ReplayBuffer
 from ..base_model import BaseModel
