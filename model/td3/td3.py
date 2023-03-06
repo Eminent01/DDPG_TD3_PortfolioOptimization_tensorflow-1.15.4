@@ -19,13 +19,13 @@ from ..base_model import BaseModel
 
 
 def build_summaries():
-    episode_reward = tf.Variable(0.)
+    episode_reward = tf.compat.v1.Variable(0.)
     tf.summary.scalar("Reward", episode_reward)
-    episode_ave_max_q = tf.Variable(0.)
+    episode_ave_max_q = tf.compat.v1.Variable(0.)
     tf.summary.scalar("Qmax_Value", episode_ave_max_q)
 
     summary_vars = [episode_reward, episode_ave_max_q]
-    summary_ops = tf.summary.merge_all()
+    summary_ops = tf.compat.v1.summary.merge_all()
 
     return summary_ops, summary_vars
 
@@ -69,9 +69,9 @@ class TD3(BaseModel):
         """
         if load_weights:
             try:
-                variables = tf.global_variables()
+                variables = tf.compat.v1.global_variables()
                 param_dict = {}
-                saver = tf.train.Saver()
+                saver = tf.compat.v1.train.Saver()
                 saver.restore(self.sess, self.model_save_path)
                 for var in variables:
                     var_name = var.name[:-2]
@@ -81,10 +81,10 @@ class TD3(BaseModel):
             except:
                 traceback.print_exc()
                 print('Build model from scratch')
-                self.sess.run(tf.global_variables_initializer())
+                self.sess.run(tf.compat.v1.global_variables_initializer())
         else:
             print('Build model from scratch')
-            self.sess.run(tf.global_variables_initializer())
+            self.sess.run(tf.compat.v1.global_variables_initializer())
 
     def train(self, verbose=True, debug=False):
         """
@@ -94,7 +94,7 @@ class TD3(BaseModel):
             debug:
         Returns:
         """
-        writer = tf.summary.FileWriter(self.summary_path, self.sess.graph)
+        writer = tf.compat.v1.summary.FileWriter(self.summary_path, self.sess.graph)
         print('inside TD3 train')
         self.actor.update_target_network()
         self.critic.update_target_network()
