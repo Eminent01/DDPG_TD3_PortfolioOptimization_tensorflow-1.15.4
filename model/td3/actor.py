@@ -54,19 +54,19 @@ class TD3ActorNetwork(object):
 
         # Op for periodically updating target network with online network weights
         self.update_target_network_params = \
-            [self.target_network_params[i].assign(tf.multiply(self.network_params[i], self.tau) +
-                                                  tf.multiply(self.target_network_params[i], 1. - self.tau))
+            [self.target_network_params[i].assign(tf.compat.v1.multiply(self.network_params[i], self.tau) +
+                                                  tf.compat.v1.multiply(self.target_network_params[i], 1. - self.tau))
              for i in range(len(self.target_network_params))]
 
         # This gradient will be provided by the critic network
-        self.action_gradient = tf.placeholder(tf.float32, [None] + self.a_dim)
+        self.action_gradient = tf.compat.v1.placeholder(tf.compat.v1.float32, [None] + self.a_dim)
 
         # Combine gradients
-        self.unnormalized_actor_gradients = tf.gradients(self.scaled_out, self.network_params, -self.action_gradient)
-        self.actor_gradients = list(map(lambda x: tf.div(x, self.batch_size), self.unnormalized_actor_gradients))
+        self.unnormalized_actor_gradients = tf.compat.v1.gradients(self.scaled_out, self.network_params, -self.action_gradient)
+        self.actor_gradients = list(map(lambda x: tf.compat.v1.div(x, self.batch_size), self.unnormalized_actor_gradients))
 
         # Optimization Op
-        self.optimize = tf.train.AdamOptimizer(self.learning_rate). \
+        self.optimize = tf.compat.v1.train.AdamOptimizer(self.learning_rate). \
             apply_gradients(zip(self.actor_gradients, self.network_params))
 
         self.num_trainable_vars = len(self.network_params) + len(self.target_network_params)
