@@ -26,32 +26,32 @@ class TD3CriticNetwork(object):
         self.tau = tau
 
         # Create the critic network
-        self.inputs = tf.placeholder(shape=[None] + self.s_dim + [1], dtype=tf.float32)
-        self.action = tf.placeholder(shape=[None] + self.a_dim, dtype=tf.float32)
+        self.inputs = tf.compat.v1.placeholder(shape=[None] + self.s_dim + [1], dtype=tf.float32)
+        self.action = tf.compat.v1.placeholder(shape=[None] + self.a_dim, dtype=tf.float32)
 
         # Main Critic
         self.total_out, _ = self.create_critic_network('main_critic', self.inp_actions)
         self.out1, self.out2 = self.create_critic_network('main_critic', self.action, reuse=True)
 
-        #self.network_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'main_critic')
+        #self.network_params = tf.compat.v1.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'main_critic')
         self.network_params = tf.compat.v1.trainable_variables()[num_actor_vars:]
 
         # Target Critic
         self.target_out1, self.target_out2 = self.create_critic_network('target_critic', self.action)
 
-        #self.target_network_params = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'target_critic')
+        #self.target_network_params = tf.compat.v1.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, 'target_critic')
         self.target_network_params = tf.compat.v1.trainable_variables()[(len(self.network_params) + num_actor_vars):]
 
         self.update_target_network_params = \
-            [self.target_network_params[i].assign(tf.multiply(self.network_params[i], self.tau) +
-                                                  tf.multiply(self.target_network_params[i], 1. - self.tau))
+            [self.target_network_params[i].assign(tf.compat.v1.multiply(self.network_params[i], self.tau) +
+                                                  tf.compat.v1.multiply(self.target_network_params[i], 1. - self.tau))
              for i in range(len(self.target_network_params))]
 
-        self.predicted_q_value = tf.placeholder(tf.float32, [None, 1])
+        self.predicted_q_value = tf.compat.v1.placeholder(tf.compat.v1.float32, [None, 1])
 
-        self.loss = tf.reduce_mean(tf.square(self.out1 - self.predicted_q_value)) + tf.reduce_mean(
-            tf.square(self.out2 - self.predicted_q_value))
-        self.train_step = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss, var_list=self.network_params)
+        self.loss = tf.compat.v1.reduce_mean(tf.compat.v1.square(self.out1 - self.predicted_q_value)) + tf.compat.v1.reduce_mean(
+            tf.compat.v1.square(self.out2 - self.predicted_q_value))
+        self.train_step = tf.compat.v1.train.AdamOptimizer(self.learning_rate).minimize(self.loss, var_list=self.network_params)
 
     def create_critic_network(self, scope, actions, reuse=False):
         raise NotImplementedError('Create critic should return (inputs, action, out)')
