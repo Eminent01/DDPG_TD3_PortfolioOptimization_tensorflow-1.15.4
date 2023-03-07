@@ -58,9 +58,9 @@ class DDPG(BaseModel):
         """
         if load_weights:
             try:
-                variables = tf.global_variables()
+                variables = tf.compat.v1.global_variables()
                 param_dict = {}
-                saver = tf.train.Saver()
+                saver = tf.compat.v1.train.Saver()
                 saver.restore(self.sess, self.model_save_path)
                 for var in variables:
                     var_name = var.name[:-2]
@@ -70,10 +70,10 @@ class DDPG(BaseModel):
             except:
                 traceback.print_exc()
                 print('Build model from scratch')
-                self.sess.run(tf.global_variables_initializer())
+                self.sess.run(tf.compat.v1.global_variables_initializer())
         else:
             print('Build model from scratch')
-            self.sess.run(tf.global_variables_initializer())
+            self.sess.run(tf.compat.v1.global_variables_initializer())
 
     def train(self, save_every_episode=1, verbose=True, debug=False):
         """ Must already call intialize
@@ -87,7 +87,7 @@ class DDPG(BaseModel):
         Returns:
 
         """
-        writer = tf.summary.FileWriter(self.summary_path, self.sess.graph)
+        writer = tf.compat.v1.summary.FileWriter(self.summary_path, self.sess.graph)
         print('inside DDPG train')
         self.actor.update_target_network()
         self.critic.update_target_network()
@@ -214,7 +214,7 @@ class DDPG(BaseModel):
         if not os.path.exists(self.model_save_path):
             os.makedirs(self.model_save_path, exist_ok=True)
 
-        saver = tf.train.Saver()
+        saver = tf.compat.v1.train.Saver()
         model_path = saver.save(self.sess, self.model_save_path)
         print("Model saved in %s" % model_path)
 
