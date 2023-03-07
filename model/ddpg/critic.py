@@ -5,7 +5,9 @@ Basically, it evaluates the value of (current action, previous action and observ
 
 import tensorflow as tf
 import tflearn
+import tensorflow.compat.v1 as tf
 
+tf.disable_v2_behavior()
 
 class CriticNetwork(object):
     """
