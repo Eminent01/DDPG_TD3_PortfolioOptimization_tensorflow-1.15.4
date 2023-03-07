@@ -20,9 +20,9 @@ from ..base_model import BaseModel
 
 def build_summaries():
     episode_reward = tf.compat.v1.Variable(0.)
-    tf.summary.scalar("Reward", episode_reward)
+    tf.compat.v1.summary.scalar("Reward", episode_reward)
     episode_ave_max_q = tf.compat.v1.Variable(0.)
-    tf.summary.scalar("Qmax_Value", episode_ave_max_q)
+    tf.compat.v1.summary.scalar("Qmax_Value", episode_ave_max_q)
 
     summary_vars = [episode_reward, episode_ave_max_q]
     summary_ops = tf.compat.v1.summary.merge_all()
