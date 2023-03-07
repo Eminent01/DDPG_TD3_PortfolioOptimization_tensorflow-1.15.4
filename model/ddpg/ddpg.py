@@ -15,7 +15,9 @@ import math
 
 from model.replay_buffer import ReplayBuffer
 from ..base_model import BaseModel
+import tensorflow.compat.v1 as tf
 
+tf.disable_v2_behavior()
 
 def build_summaries():
     episode_reward = tf.Variable(0.)
