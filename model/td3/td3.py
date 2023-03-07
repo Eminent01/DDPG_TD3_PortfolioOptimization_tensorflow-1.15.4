@@ -56,8 +56,8 @@ class TD3(BaseModel):
         self.log_return = log_return
         self.summary_ops, self.summary_vars = build_summaries()
 
-        self.actor_loss = -tf.reduce_mean(self.critic.total_out)
-        self.actor_train_step = tf.train.AdamOptimizer(actor.learning_rate).minimize(self.actor_loss,
+        self.actor_loss = -tf.compat.v1.reduce_mean(self.critic.total_out)
+        self.actor_train_step = tf.compat.v1.train.AdamOptimizer(actor.learning_rate).minimize(self.actor_loss,
                                                                                                var_list=self.actor.network_params)
         
         
@@ -262,7 +262,7 @@ class TD3(BaseModel):
         if not os.path.exists(self.model_save_path):
             os.makedirs(self.model_save_path, exist_ok=True)
 
-        saver = tf.train.Saver()
+        saver = tf.compat.v1.train.Saver()
         model_path = saver.save(self.sess, self.model_save_path)
         print("Model saved in %s" % model_path)
 
