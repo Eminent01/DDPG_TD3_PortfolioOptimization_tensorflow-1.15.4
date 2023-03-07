@@ -24,6 +24,9 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import json
 import sys
+import tensorflow.compat.v1 as tf
+
+tf.disable_v2_behavior()
 
 DEBUG = False
 
@@ -347,7 +350,7 @@ class TD3StockCritic(CriticNetwork):
         TD3CriticNetwork.__init__(self, sess, state_dim, action_dim, learning_rate, tau, num_actor_vars, inp_actions)
 
     def create_critic_network(self, scope, actions, reuse=False):
-        with tf.variable_scope(scope, reuse=reuse):
+        with tf.compat.v1.variable_scope(scope, reuse=reuse):
             # NET1 -------------------------------
             net1 = stock_predictor(self.inputs, self.predictor_type, self.use_batch_norm)
             # Add the action tensor in the 2nd hidden layer
