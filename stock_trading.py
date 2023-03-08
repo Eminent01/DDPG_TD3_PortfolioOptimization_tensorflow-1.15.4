@@ -830,7 +830,7 @@ if __name__ == '__main__':
     
     # Hardcoded
     log_return = True
-    config_file_path = 'config/stock.json'    
+    config_file_path = '/content/config/stock.json'    
     window_length = int(args['window_length'])    
     
     assert args['framework'] in ['DDPG', 'TD3'], 'Framework must be either PG, DDPG or TD3'
@@ -869,7 +869,7 @@ if __name__ == '__main__':
         
     # Stock History
     dataset_name = config['dataset']
-    history, assets, date_list = read_stock_history(filepath='utils/datasets/{}.h5'.format(dataset_name))
+    history, assets, date_list = read_stock_history(filepath='/content/utils/datasets/{}.h5'.format(dataset_name))
     history = history[:, :, :4]
     print("Dataset: {}".format(dataset_name))
     print("Stock History Shape: {}".format(history.shape))
